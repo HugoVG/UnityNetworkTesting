@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+#if UNITY_EDITOR
+using ParrelSync;
+#endif
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
@@ -38,7 +37,16 @@ public class LobbyMaker : MonoBehaviour
 
     private static async Task Authenticate()
     {
-        await UnityServices.InitializeAsync();
+        var options = new InitializationOptions();
+        
+#if UNITY_EDITOR
+        if (ClonesManager.IsClone())
+        {
+            options.SetProfile(ClonesManager.GetArgument());
+        }
+#endif
+        
+        await UnityServices.InitializeAsync(options);
 
         AuthenticationService.Instance.SignedIn += () =>
         {
@@ -62,7 +70,6 @@ public class LobbyMaker : MonoBehaviour
         {
             Debug.Log(e);
             buttons.SetActive(true);
-            return;
         }
     }
 
@@ -70,7 +77,7 @@ public class LobbyMaker : MonoBehaviour
     {
         buttons.SetActive(false);
         JoinAllocation allocation = await RelayService.Instance.JoinAllocationAsync(joinCodeInputField.text);
-        transportProvider.SetHostRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData);
+        transportProvider.SetClientRelayData(allocation.RelayServer.IpV4, (ushort)allocation.RelayServer.Port, allocation.AllocationIdBytes, allocation.Key, allocation.ConnectionData, allocation.HostConnectionData);
         Debug.Log($"client: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
         Debug.Log($"host: {allocation.HostConnectionData[0]} {allocation.HostConnectionData[1]}");
         Debug.Log($"client: {allocation.AllocationId}");
@@ -82,7 +89,7 @@ public class LobbyMaker : MonoBehaviour
     {
         if(!NetworkManager.Singleton.IsHost) return;
         Debug.Log("StartingGame");
-        NetworkManager.Singleton.GetComponent<NetworkSceneManager>().LoadScene("SampleScene", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
     }
 
     // Start is called before the first frame update

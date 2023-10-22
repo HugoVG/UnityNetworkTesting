@@ -6,7 +6,7 @@ using Unity.Netcode;
 
 public class PressurePlate : Signal<bool>
 {
-    public NetworkVariable<bool> isActivated = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isActivated = new NetworkVariable<bool>(false, NetworkVariableReadPermission.Everyone);
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private Material OffMaterial;
     [SerializeField] private Material OnMaterial;
@@ -32,7 +32,8 @@ public class PressurePlate : Signal<bool>
         if (layerMask != (layerMask | (1 << other.gameObject.layer))) return;
         //Add the object to the list
         objectsOnPlate.Add(other.gameObject);
-        CheckActive();
+        if(NetworkManager.Singleton.IsServer)
+            CheckActive();
     }
 
     private void OnTriggerExit(Collider other)
@@ -41,7 +42,8 @@ public class PressurePlate : Signal<bool>
         if (layerMask != (layerMask | (1 << other.gameObject.layer))) return;
         //Remove the object from the list
         objectsOnPlate.Remove(other.gameObject);
-        CheckActive();
+        if(NetworkManager.Singleton.IsServer)
+            CheckActive();
     }
 
     private void CheckActive()

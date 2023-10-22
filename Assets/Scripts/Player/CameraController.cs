@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
+
 public class CameraController : NetworkBehaviour
 {
     public GameObject cameraHolder;
