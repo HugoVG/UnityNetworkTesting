@@ -39,10 +39,14 @@ public class PlayerSpawner : NetworkBehaviour
         if (!IsHost || scenename != "SampleScene") return;
         foreach (var id in clientscompleted)
         {
+            var data = SessionManager<SessionData>.Instance.GetPlayerData(id);
+            Debug.Log($"{id}, {data.PlayerName}, {data.PlayerTeam}");
+            
+            
             //Check if the client is the host
             bool ishostingplayer = id == NetworkManager.Singleton.LocalClientId;
             GameObject newPlayer;
-            if (ishostingplayer)
+            if (data.PlayerTeam == Team.Fox)
             {
                 newPlayer = (GameObject)Instantiate(foxPrefab);
             }
@@ -51,7 +55,6 @@ public class PlayerSpawner : NetworkBehaviour
                 newPlayer = (GameObject)Instantiate(badgerPrefab);
             }
             newPlayer.GetComponent<NetworkObject>().SpawnAsPlayerObject(id, true);
-                
         }
     }
 }

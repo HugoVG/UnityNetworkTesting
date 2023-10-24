@@ -32,8 +32,7 @@ public class PressurePlate : Signal<bool>
         if (layerMask != (layerMask | (1 << other.gameObject.layer))) return;
         //Add the object to the list
         objectsOnPlate.Add(other.gameObject);
-        if(NetworkManager.Singleton.IsServer)
-            CheckActive();
+        CheckActive();
     }
 
     private void OnTriggerExit(Collider other)
@@ -42,8 +41,7 @@ public class PressurePlate : Signal<bool>
         if (layerMask != (layerMask | (1 << other.gameObject.layer))) return;
         //Remove the object from the list
         objectsOnPlate.Remove(other.gameObject);
-        if(NetworkManager.Singleton.IsServer)
-            CheckActive();
+        CheckActive();
     }
 
     private void CheckActive()

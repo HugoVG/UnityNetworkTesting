@@ -8,6 +8,11 @@ public class CameraController : NetworkBehaviour
     [SerializeField] private Vector3 cameraOffset;
     public override void OnNetworkSpawn()
     {
+        if (!NetworkManager.Singleton.IsListening)
+        {
+            cameraHolder.SetActive(true);
+            return;
+        }
         if (!IsOwner) return;
         cameraHolder.SetActive(true);
     }

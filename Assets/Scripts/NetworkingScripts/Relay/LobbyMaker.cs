@@ -22,7 +22,7 @@ public class LobbyMaker : MonoBehaviour
     [SerializeField] GameObject LobbyUI;
     
     private UnityTransport transportProvider;
-    private const int maxPlayers = 3;
+    private const int maxPlayers = 4;
     
     private async void Awake()
     {
@@ -82,6 +82,7 @@ public class LobbyMaker : MonoBehaviour
         Debug.Log($"host: {allocation.HostConnectionData[0]} {allocation.HostConnectionData[1]}");
         Debug.Log($"client: {allocation.AllocationId}");
         NetworkManager.Singleton.StartClient();
+        
         LobbyUI.SetActive(true);
     }
     
