@@ -1,3 +1,4 @@
+using IngameDebugConsole;
 using UnityEngine;
 
 /// <summary>
@@ -35,6 +36,11 @@ public class PlayerMovement : MonoBehaviour
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        
+        //Debug commands
+        DebugLogConsole.AddCommandInstance("DoubleSpeed", "Doubles the players Speed", "DebugDoubleSpeed", this);
+        DebugLogConsole.AddCommandInstance("ResetSpeed", "Resets the players Speed", "DebugResetSpeed", this);
+        
     }
 
     void Update()
@@ -79,4 +85,14 @@ public class PlayerMovement : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
+
+    public void DebugDoubleSpeed()
+    {
+        walkingSpeed *= 2;
+    }
+    public void DebugResetSpeed()
+    {
+        walkingSpeed = 7.5f;
+    }
+    
 }
