@@ -15,12 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Check out the code
-      - uses: nikeee/docfx-action@v1.0.0
+      - uses: "nunit/docfx-action@v2.10.0"
         name: Build with Docfx
         with:
           args: Documentation/docfx.json
       - name: zip site contents
-        run: zip -r _site.zip Documentation/_site
+        run: zip -r _site.zip Documentation/_site/
       - name: Archive site artifacts # Only way
         uses: actions/upload-artifact@v3
         with:
