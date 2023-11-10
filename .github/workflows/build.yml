@@ -20,7 +20,7 @@ jobs:
         with:
           args: Documentation/docfx.json
       - name: zip site contents
-        run: zip -r _site.zip docs/_site/
+        run: zip -r _site.zip Documentation/_site/
       - name: Archive site artifacts # Only way
         uses: actions/upload-artifact@v3
         with:
@@ -42,7 +42,7 @@ jobs:
         with:
           commit_message: ${{ github.event.head_commit.message }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/_site
+          publish_dir: ./Documentation/_site
           publish_branch: gh-pages
           # hello_world_job:
           #   runs-on: ubuntu-latest
