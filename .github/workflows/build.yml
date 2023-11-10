@@ -3,10 +3,10 @@ name: Documentation
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
           name: siteArtifact
           path: _site.zip
   publish:
-    name: Publish (master branch only)
+    name: Publish
     needs: [build]
     runs-on: ubuntu-latest
     steps:
