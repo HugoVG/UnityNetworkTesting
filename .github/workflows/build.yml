@@ -1,0 +1,24 @@
+name: Documentation
+
+"on":
+  - push
+  - pull_request
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: Build Docs and scream it doest work
+    steps:
+    - uses: actions/checkout@v3
+    # ...
+    - uses: nikeee/docfx-action@v1.0.0
+      name: Build Documentation
+      with:
+        args: Documentation/docfx.json
+
+    # Publish generated site using GitHub Pages
+    - uses: maxheld83/ghpages@master
+      name: Publish Documentation on GitHub Pages
+      env:
+        BUILD_DIR: Docs # docfx's default output directory is _site
+        GH_PAT: ${{ secrets.GH_PAT }} # See https://github.com/maxheld83/ghpages

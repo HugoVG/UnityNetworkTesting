@@ -1,0 +1,80 @@
+{
+  "metadata": [
+    {
+        "src": [
+            {
+                "src": "../",
+                "files": [
+                    "Assembly-CSharp.csproj"
+                ],
+                "exclude": [
+                    "Assets/Plugins/**"
+                ]
+            }
+        ],
+        "globalNamespaceId": "Global",
+        "allowCompilationErrors": true,
+        "dest": "api",
+        "namespaceLayout": "nested",
+        "filter": "filterConfig.yml"
+    }
+],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "toc.yml",
+          "index.md"
+        ]
+      },
+      {
+        "src": "api",
+        "files": [
+          "*.yml"
+        ],
+        "dest": "api"
+      },
+      {
+        "src": "manual",
+        "files": [
+          "toc.yml",
+          "*.md"
+        ],
+        "dest": "manual"
+      }
+    ],
+    "overwrite": [
+      {
+        "src": "..",
+        "files": [
+          "Assets/Scripts/**/*.md"
+        ]
+      }
+    ],
+    "resources": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "xref": [
+      "https://normanderwan.github.io/UnityXrefMaps/2023.3/xrefmap.yml"
+    ],
+    "xrefService": [
+      "https://xref.docs.microsoft.com/query?uid={uid}"
+    ],
+    "output": "../docs",
+    "template": [
+      "template/unity",
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "Cluck Frenzy!",
+      "_appTitle": "Cluck Frenzy!",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

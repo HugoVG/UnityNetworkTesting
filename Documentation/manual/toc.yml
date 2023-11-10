@@ -1,0 +1,5 @@
+- name: Index
+  href: /manual/
+  homepage: manual/index.md
+- name: GameEventSystem
+  href: GameEventSystem.md

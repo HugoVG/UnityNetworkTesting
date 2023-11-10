@@ -1,0 +1,28 @@
+apiRules:
+- include:
+    uidRegex: ^Npc\.Helpers
+    type: Namespace
+- include: # The namespaces to generate
+    uidRegex: ^Networking
+    type: Namespace
+- include:
+    uidRegex: ^Enemy
+    type: Namespace
+- include:
+    uidRegex: ^Global
+    type: Namespace
+- include:
+    uidRegex: ^Interaction
+    type: Namespace
+- include:
+    uidRegex: ^Contraptions
+    type: Namespace
+- include:
+    uidRegex: ^Chicken
+    type: Namespace
+- include:
+    uidRegex: ^BackEndSystems
+    type: Namespace
+- exclude:
+    uidRegex: .*
+    type: Namespace
