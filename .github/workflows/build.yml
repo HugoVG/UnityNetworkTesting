@@ -13,8 +13,29 @@ jobs:
     name: "Build the site with docfx"
     runs-on: ubuntu-latest
     steps:
+      # Check out
       - uses: actions/checkout@v4
         name: Check out the code
+        with:
+          lfs: true
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v3
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: StandaloneWindows64
+          allowDirtyBuild: true
+
       - uses: "nunit/docfx-action@v2.10.0"
         name: Build with Docfx
         with:
