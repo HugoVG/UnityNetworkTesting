@@ -64,7 +64,7 @@
     "xrefService": [
       "https://xref.docs.microsoft.com/query?uid={uid}"
     ],
-    "output": "../docs",
+    "output": "_site",
     "template": [
       "template/unity",
       "default",

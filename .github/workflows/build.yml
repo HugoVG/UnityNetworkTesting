@@ -1,22 +1,61 @@
 name: Documentation
 
-"on":
-  - push
-  - pull_request
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
-  hello_world_job:
+  build:
+    name: "Build the site with docfx"
     runs-on: ubuntu-latest
-    name: Build Docs and scream it doest work
     steps:
-    - uses: actions/checkout@v3
-    # ...
-    - uses: nikeee/docfx-action@v1.0.0
-      name: Build Documentation
-      with:
-        args: Documentation/docfx.json
-    - uses: peaceiris/actions-gh-pages@v3.6.1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs
-        force_orphan: true
+      - uses: actions/checkout@v4
+        name: Check out the code
+      - uses: nikeee/docfx-action@v1.0.0
+        name: Build with Docfx
+        with:
+          args: Documentation/docfx.json
+      - name: zip site contents
+        run: zip -r _site.zip docs/_site/
+      - name: Archive site artifacts # Only way
+        uses: actions/upload-artifact@v3
+        with:
+          name: siteArtifact
+          path: _site.zip
+  publish:
+    name: Publish (master branch only)
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download site artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: siteArtifact
+      - name: unzip site contents
+        run: unzip _site.zip
+      - name: Push to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          commit_message: ${{ github.event.head_commit.message }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/_site
+          publish_branch: gh-pages
+          # hello_world_job:
+          #   runs-on: ubuntu-latest
+          #   name: Build Docs and scream it doest work
+          #   steps:
+          #   - uses: actions/checkout@v3
+          #   # ...
+          #   - uses: nikeee/docfx-action@v1.0.0
+          #     name: Build Documentation
+          #     with:
+          #       args: Documentation/docfx.json
+          #   - uses: peaceiris/actions-gh-pages@v3.6.1
+          #     with:
+          #       github_token: ${{ secrets.GITHUB_TOKEN }}
+          #       publish_dir: ./docs
+          #       force_orphan: true
